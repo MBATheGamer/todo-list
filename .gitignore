@@ -1,0 +1,13 @@
+.*
+!.gitignore
+
+# Rust dev assets
+target/
+Cargo.lock
+
+# nodejs dev assets
+node_modules/
+
+
+# js will be compiled from .ts
+frontend/web-folder/js

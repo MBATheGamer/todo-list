@@ -1,0 +1,14 @@
+{
+    "name": "todomvc-ui",
+    "type": "module",
+    "version": "0.0.1",
+    "description": "TodoMVC Frontend",
+    "dependencies": {
+        
+    },
+    "devDependencies": {
+
+    },
+    "author": "Mohamed Benamor",
+    "license": "MIT"
+}
