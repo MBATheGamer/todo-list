@@ -1,4 +1,6 @@
-use sqlx::{Pool, Postgres, postgres::PgRow};
+use sqlx::Pool;
+use sqlx::Postgres;
+use sqlx::postgres::PgRow;
 
 use super::init_db;
 

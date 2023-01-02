@@ -3,7 +3,11 @@
 ## Dev Test
 
 ```sh
-cargo watch -q -c -w src/ -x 'test model_db_ -- --test-threads=1 --nocapture' 
+# Test database
+cargo watch -q -c -w src/ -x 'test model_db -- --test-threads=1 --nocapture'
+
+# Test Todo model
+cargo watch -q -c -w src/ -x 'test model_todo -- --test-threads=1 --nocapture' 
 ```
 
 ## Database
