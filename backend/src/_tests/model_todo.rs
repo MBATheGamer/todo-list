@@ -2,6 +2,8 @@ use sqlx::Pool;
 use sqlx::Postgres;
 
 use crate::model::db::init_db;
+use crate::security::UserCtx;
+use crate::security::utx_from_token;
 
 use super::Todo;
 use super::TodoMac;
@@ -12,13 +14,14 @@ use super::TodoStatus;
 async fn model_todo_create() -> Result<(), Box<dyn std::error::Error>> {
     // -- FIXTURE
     let db: Pool<Postgres> = init_db().await?;
+    let utx: UserCtx = utx_from_token("123").await?;
     let data_fx: TodoPatch = TodoPatch {
         title: Some("test - model_todo_create 1".to_string()),
         ..Default::default()
     };
 
     // -- ACTION
-    let todo_created: Todo = TodoMac::create(&db, data_fx.clone()).await?;
+    let todo_created: Todo = TodoMac::create(&db, &utx, data_fx.clone()).await?;
 
     // -- CHECK
     println!("\n\n->>{:?}", todo_created);
@@ -33,9 +36,10 @@ async fn model_todo_create() -> Result<(), Box<dyn std::error::Error>> {
 async fn model_todo_list() -> Result<(), Box<dyn std::error::Error>> {
     // -- FIXTURE
     let db: Pool<Postgres> = init_db().await?;
+    let utx: UserCtx = utx_from_token("123").await?;
 
     // -- ACTION
-    let todos: Vec<Todo> = TodoMac::list(&db).await?;
+    let todos: Vec<Todo> = TodoMac::list(&db, &utx).await?;
 
     // -- CHECK
     assert_eq!(2, todos.len());

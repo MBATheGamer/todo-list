@@ -3,6 +3,7 @@ use sqlx::Pool;
 use sqlx::Postgres;
 
 use crate::model;
+use crate::security::UserCtx;
 
 #[derive(sqlx::FromRow, Debug, Clone)]
 pub struct Todo {
@@ -30,7 +31,7 @@ sqlb::bindable!(TodoStatus);
 pub struct TodoMac;
 
 impl TodoMac {
-    pub async fn create(db: &Pool<Postgres>, data: TodoPatch) -> Result<Todo, model::Error> {
+    pub async fn create(db: &Pool<Postgres>, utx: &UserCtx, data: TodoPatch) -> Result<Todo, model::Error> {
         let mut fields = data.fields();
         fields.push(("cid", 123).into());
         let sql_builder = sqlb::insert()
@@ -43,7 +44,7 @@ impl TodoMac {
         return Ok(todo);
     }
 
-    pub async fn list(db: &Pool<Postgres>) -> Result<Vec<Todo>, model::Error>{
+    pub async fn list(db: &Pool<Postgres>, utx: &UserCtx) -> Result<Vec<Todo>, model::Error>{
         let sql_builder = sqlb::select()
             .table("todo")
             .columns(&["id", "cid", "title", "status"])
